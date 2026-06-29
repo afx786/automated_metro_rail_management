@@ -1,0 +1,22 @@
+[
+  {
+    "train_id": "KM01",
+    "job_card_status": "OPEN",
+    "work_order_id": "WO1001"
+  },
+  {
+    "train_id": "KM02",
+    "job_card_status": "CLOSED",
+    "work_order_id": "WO1002"
+  },
+  {
+    "train_id": "KM03",
+    "job_card_status": "OPEN",
+    "work_order_id": "WO1003"
+  },
+  {
+    "train_id": "KM04",
+    "job_card_status": "CLOSED",
+    "work_order_id": "WO1004"
+  }
+]
