@@ -1,8 +1,9 @@
 # plans.py - Updated to include cleaning assignment fields
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from ..dependencies import get_db
-from .. import optimizer, crud
+from .. import optimizer, crud, models
+from ..schemas import PlanResponse
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 
@@ -13,7 +14,7 @@ def run_plan(params: dict = None, db: Session = Depends(get_db)):
     payload = optimizer.run(db, params or {})
     items = []
     
-    for cat, status in [('revenue', 'service'), ('standby', 'standby'), ('ibl', 'maintenance')]:
+    for cat, status in [('service', 'service'), ('standby', 'standby'), ('maintenance', 'maintenance')]:
         for t in payload[cat]:
             item = {
                 'trainset': t.get('trainset'),
@@ -66,3 +67,11 @@ def stats(db: Session = Depends(get_db)):
 @router.get("/history")
 def history(limit: int = 30, db: Session = Depends(get_db)):
     return crud.get_history(db, limit)
+
+@router.get("/{plan_id}", response_model=PlanResponse)
+def get_plan(plan_id: int, db: Session = Depends(get_db)):
+    """Fetch a persisted plan by ID; returns the same payload shape as /plans/run."""
+    plan = db.query(models.Plan).filter(models.Plan.id == plan_id).first()
+    if not plan:
+        raise HTTPException(status_code=404, detail=f"Plan {plan_id} not found")
+    return crud.plan_to_payload(plan, db)
