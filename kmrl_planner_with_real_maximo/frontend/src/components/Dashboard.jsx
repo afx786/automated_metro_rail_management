@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { API_URL } from '../services/api';
 
 export default function Dashboard() {
   const [trainsets, setTrainsets] = useState([]);
@@ -6,12 +7,12 @@ export default function Dashboard() {
   const [plan, setPlan] = useState(null);
 
   useEffect(() => {
-    fetch('http://localhost:8000/trainsets/')
+    fetch(`${API_URL}/trainsets/`)
       .then(r => r.json())
       .then(data => {
         setTrainsets(data);
         data.forEach(t => {
-          fetch(`http://localhost:8000/iot/trainsets/${t.code}`)
+          fetch(`${API_URL}/iot/trainsets/${t.code}`)
             .then(r => r.json())
             .then(sensorData => setSensors(prev => ({ ...prev, [t.code]: sensorData })))
             .catch(() => {});
@@ -21,12 +22,12 @@ export default function Dashboard() {
   }, []);
 
   const refresh = async () => {
-    await fetch('http://localhost:8000/trainsets/refresh/maximo', { method: 'POST' });
-    const r = await fetch('http://localhost:8000/trainsets/');
+    await fetch(`${API_URL}/trainsets/refresh/maximo`, { method: 'POST' });
+    const r = await fetch(`${API_URL}/trainsets/`);
     const updated = await r.json();
     setTrainsets(updated);
     updated.forEach(t => {
-      fetch(`http://localhost:8000/iot/trainsets/${t.code}`)
+      fetch(`${API_URL}/iot/trainsets/${t.code}`)
         .then(r => r.json())
         .then(sensorData => setSensors(prev => ({ ...prev, [t.code]: sensorData })))
         .catch(() => {});
@@ -34,7 +35,7 @@ export default function Dashboard() {
   };
 
   const run = async () => {
-    const res = await fetch('http://localhost:8000/plans/run', {
+    const res = await fetch(`${API_URL}/plans/run`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({})
@@ -47,7 +48,7 @@ export default function Dashboard() {
     <div className="px-4 py-6 max-w-screen-xl mx-auto">
       <header className="text-center mb-8">
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900">
-          KMRL Real Maximo Dashboard
+          KMRL Planner Dashboard
         </h1>
       </header>
 
@@ -117,7 +118,7 @@ export default function Dashboard() {
       {plan && (
         <section className="mb-6">
           <h3 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-4">
-            Plan (Revenue)
+            Plan (Service)
           </h3>
           <div className="overflow-x-auto">
             <table className="min-w-full bg-white rounded-lg shadow">
@@ -128,7 +129,7 @@ export default function Dashboard() {
                 </tr>
               </thead>
               <tbody>
-                {plan.revenue.map(p => (
+                {plan.service.map(p => (
                   <tr key={p.trainset} className="border-t">
                     <td className="px-4 py-2 text-sm text-gray-800">{p.trainset}</td>
                     <td className="px-4 py-2 text-sm text-gray-800">{p.status}</td>
