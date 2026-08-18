@@ -2,7 +2,7 @@ import sqlite3
 import random
 
 # Create the database file
-conn = sqlite3.connect('kmrl_real_maximo.db')
+conn = sqlite3.connect('kmrl_mock_maximo.db')
 cursor = conn.cursor()
 
 # Create tables
@@ -55,4 +55,4 @@ for i in range(1, 26):
 conn.commit()
 conn.close()
 
-print("✅ kmrl_real_maximo.db file created successfully!")
+print("✅ kmrl_mock_maximo.db file created successfully!")

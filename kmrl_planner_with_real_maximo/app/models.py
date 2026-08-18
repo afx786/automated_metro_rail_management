@@ -16,6 +16,10 @@ class Trainset(Base):
     deep_clean_complexity = Column(String, default="medium")  # low, medium, high
     estimated_clean_time = Column(Integer, default=4)  # hours
     required_manpower = Column(Integer, default=2)  # people needed
+    # ML model feature inputs (populated by seeding / admin updates)
+    sensor_aggregate = Column(Float, default=0.0)
+    days_since_inspection = Column(Integer, default=30)
+    age_months = Column(Integer, default=12)
 
 class Plan(Base):
     __tablename__ = "plans"
@@ -42,18 +46,13 @@ class PlanItem(Base):
     urgency_score = Column(Integer, nullable=True)
     maintenance_score = Column(Float, nullable=True)
     fitness_status = Column(String, nullable=True)
-    maintenance_priority = Column(Integer, nullable=True)
-    priority_level = Column(String, nullable=True)
-    urgency_score = Column(Integer, nullable=True)
-    maintenance_score = Column(Float, nullable=True)
-    fitness_status = Column(String, nullable=True)
-    # New deep cleaning fields
+    # Deep cleaning fields
     assigned_bay = Column(String, nullable=True)
     assigned_team = Column(String, nullable=True)
+    estimated_time = Column(Integer, nullable=True)  # hours
+    manpower = Column(Integer, nullable=True)
+    complexity = Column(String, nullable=True)  # low, medium, high
     estimated_completion = Column(DateTime, nullable=True)
-    plan = relationship("Plan", back_populates="items")
-    
-    # Relationship to Plan - MAKE SURE THIS IS CORRECT
     plan = relationship("Plan", back_populates="items")
 
 

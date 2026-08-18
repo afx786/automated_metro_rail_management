@@ -1,12 +1,10 @@
-x#!/bin/bash
+#!/bin/bash
 # KMRL Planner Backend Startup Script
 
 echo "Starting KMRL Planner Backend..."
 
 # Set environment variables if needed
-# export MAXIMO_URL="https://your-maximo-instance.com"
-# export MAXIMO_USER="your-username"
-# export MAXIMO_PASS="your-password"
+# export DATABASE_URL="sqlite:///./kmrl_mock_maximo.db"
 
 # Start the server
-uvicorn main:app --host 127.0.0.1 --port 8000 --reload
+uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload

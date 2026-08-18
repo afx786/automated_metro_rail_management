@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from ..dependencies import get_db
-from ..connectors_maximo import MaximoDummyConnector
+from ..connectors_mock_maximo import MaximoMockConnector
 from .. import models
 
 router = APIRouter(prefix="/trainsets", tags=["trainsets"])
@@ -20,6 +20,6 @@ def list_trainsets(db: Session = Depends(get_db)):
 
 @router.post("/refresh/maximo")
 def refresh_from_maximo(db: Session = Depends(get_db)):
-    conn = MaximoDummyConnector()
-    conn.update_trainsets_from_dummy(db)
-    return {"message": "Fetched and updated trainsets from Maximo"}
+    conn = MaximoMockConnector()
+    conn.update_trainsets_from_mock(db)
+    return {"message": "Fetched and updated trainsets from simulated Maximo"}

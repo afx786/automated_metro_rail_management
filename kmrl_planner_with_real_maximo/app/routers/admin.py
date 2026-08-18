@@ -2,11 +2,16 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from ..dependencies import get_db
+from ..security import require_admin_key
 from .. import models
 from pydantic import BaseModel
 from typing import Optional, List
 
-router = APIRouter(prefix="/admin", tags=["admin"])
+router = APIRouter(
+    prefix="/admin",
+    tags=["admin"],
+    dependencies=[Depends(require_admin_key)],
+)
 
 # Pydantic models for request validation
 class TrainsetUpdate(BaseModel):

@@ -3,7 +3,7 @@ import sqlite3
 import os
 
 def migrate_bays_table():
-    db_path = 'kmrl_real_maximo.db'
+    db_path = 'kmrl_mock_maximo.db'
     
     if not os.path.exists(db_path):
         print("Database doesn't exist yet. It will be created automatically.")

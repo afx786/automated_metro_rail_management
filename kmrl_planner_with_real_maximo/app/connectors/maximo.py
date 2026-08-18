@@ -1,4 +1,4 @@
-"""Real Maximo connector - placeholder for API/DB integration"""
+"""Simulated Maximo connector - mock data source (placeholder for API/DB integration)"""
 def get_open_jobcards() -> list:
     # TODO: Replace with real Maximo API query or DB connection
     return []
