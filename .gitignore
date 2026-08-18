@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+*.egg-info/
+.pytest_cache/
+
+# Node / frontend
+node_modules/
+dist/
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+*.swp
+__MACOSX/
+
+# Archives / binaries / data artifacts
+*.zip
+*.db
+*.sqlite3
+*.joblib
+*.pkl
+*.pt
+*.h5
+
+# Runtime / local config
+temp_uploads/
+.env
+.env.local
