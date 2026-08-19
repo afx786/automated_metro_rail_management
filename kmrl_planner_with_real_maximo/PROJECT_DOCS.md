@@ -158,6 +158,11 @@ their output is plain ASCII, so no `PYTHONIOENCODING`/UTF-8 console workaround i
 After retraining, restart the backend and the startup log above should show
 `TRAINED MODEL LOADED` for both models.
 
+**When you retrain, note it in the commit message.** The model files are binary, so `git diff`
+shows only "Binary files differ" — write down what changed and why (new/updated training data,
+feature changes, different model params, accuracy before/after) so future readers can tell
+what the new blob means.
+
 ### Admin access
 
 Every `/admin/*` route requires the header `X-API-Key: <key>`. Default dev key:

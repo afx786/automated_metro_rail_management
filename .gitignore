@@ -27,8 +27,11 @@ __MACOSX/
 *.h5
 # ...except the trained ML artifacts in models/, which are intentionally committed
 # so a fresh clone starts with real trained models (no manual retrain step needed).
-!kmrl_planner_with_real_maximo/models/*.joblib
-!kmrl_planner_with_real_maximo/models/*.pkl
+# Exceptions are the exact filenames — a wildcard here would un-ignore ANY *.joblib/*.pkl
+# in that folder.
+!kmrl_planner_with_real_maximo/models/certificate_expiry_predictor.joblib
+!kmrl_planner_with_real_maximo/models/certificate_expiry_feature_columns.pkl
+!kmrl_planner_with_real_maximo/models/maintenance_urgency_scorer.joblib
 
 # Runtime / local config
 temp_uploads/
