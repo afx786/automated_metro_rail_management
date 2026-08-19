@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .database import Base, engine, SessionLocal
+from .database import SessionLocal
 from .routers import health, trainsets, plans, iot, ml, admin
 from . import crud
 from . import ml_models
@@ -19,7 +19,7 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-Base.metadata.create_all(bind=engine)
+
 with SessionLocal() as db:
     crud.ensure_seed_trainsets(db)
     crud.ensure_cleaning_bays(db)
