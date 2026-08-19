@@ -25,6 +25,10 @@ __MACOSX/
 *.pkl
 *.pt
 *.h5
+# ...except the trained ML artifacts in models/, which are intentionally committed
+# so a fresh clone starts with real trained models (no manual retrain step needed).
+!kmrl_planner_with_real_maximo/models/*.joblib
+!kmrl_planner_with_real_maximo/models/*.pkl
 
 # Runtime / local config
 temp_uploads/

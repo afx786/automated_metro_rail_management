@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from .database import Base, engine, SessionLocal
 from .routers import health, trainsets, plans, iot, ml, admin
 from . import crud
+from . import ml_models
 import os
 
 app = FastAPI(title="KMRL Planner (Simulated Maximo)")
@@ -23,6 +24,11 @@ with SessionLocal() as db:
     crud.ensure_seed_trainsets(db)
     crud.ensure_cleaning_bays(db)
     crud.ensure_cleaning_teams(db)
+
+# Warm up the ML models at startup so the real-vs-fallback status is visible
+# in the console immediately, instead of the first time a plan runs.
+ml_models.FitnessExpiryModel.load()
+ml_models.MaintenanceUrgencyModel.load()
 
 @app.get("/")
 def read_root():

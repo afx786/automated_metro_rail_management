@@ -6,8 +6,9 @@ from sklearn.ensemble import RandomForestClassifier
 import joblib
 from pathlib import Path
 
-BASE_DIR = Path(__file__).parent / "models"
-BASE_DIR.mkdir(exist_ok=True)
+# Save directly into models/ so the app (which reads from models/) picks them up.
+# Historically these scripts wrote to models/models/ and a manual copy step was needed.
+BASE_DIR = Path(__file__).parent
 
 # Dummy dataset (replace with your real maintenance/job card history!)
 data = pd.DataFrame({
@@ -34,4 +35,4 @@ pipeline.fit(X_train, y_train)
 model_path = BASE_DIR / "maintenance_urgency_scorer.joblib"
 joblib.dump(pipeline, model_path)
 
-print(f"✅ Model retrained and saved at {model_path}")
+print(f"Model retrained and saved at {model_path}")

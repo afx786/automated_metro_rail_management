@@ -7,8 +7,9 @@ from pathlib import Path
 import numpy as np
 from datetime import datetime, timedelta
 
-BASE_DIR = Path(__file__).parent / "models"
-BASE_DIR.mkdir(exist_ok=True)
+# Save directly into models/ so the app (which reads from models/) picks them up.
+# Historically these scripts wrote to models/models/ and a manual copy step was needed.
+BASE_DIR = Path(__file__).parent
 
 # Generate training data that predicts expiration in 6 months
 def generate_training_data():
@@ -33,7 +34,7 @@ def generate_training_data():
 
 # Train the model
 def train_fitness_model():
-    print("🔄 Training fitness certificate expiry model...")
+    print("Training fitness certificate expiry model...")
     
     # Generate training data
     df = generate_training_data()
@@ -53,7 +54,7 @@ def train_fitness_model():
     # Evaluate
     train_score = model.score(X_train, y_train)
     test_score = model.score(X_test, y_test)
-    print(f"✅ Model trained - Train accuracy: {train_score:.3f}, Test accuracy: {test_score:.3f}")
+    print(f"Model trained - Train accuracy: {train_score:.3f}, Test accuracy: {test_score:.3f}")
     
     # Save model and feature columns
     model_path = BASE_DIR / "certificate_expiry_predictor.joblib"
@@ -62,8 +63,8 @@ def train_fitness_model():
     feature_path = BASE_DIR / "certificate_expiry_feature_columns.pkl"
     joblib.dump(feature_cols, feature_path)
     
-    print(f"💾 Model saved to {model_path}")
-    print(f"💾 Feature columns saved to {feature_path}")
+    print(f"Model saved to {model_path}")
+    print(f"Feature columns saved to {feature_path}")
     
     return model, feature_cols
 

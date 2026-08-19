@@ -7,6 +7,11 @@ BASE_DIR = Path(__file__).parent.parent / "models"
 DEFAULT_FEATURE_COLS = ['sensor_aggregate', 'days_since_inspection', 'open_job_card_count', 'age_months']
 
 
+def _ml_log(message: str) -> None:
+    """Startup/status line for the ML subsystem. Always shown (stdout), never DEBUG-level."""
+    print(f"[ml] {message}", flush=True)
+
+
 class FitnessExpiryModel:
     _model = None
     _feature_cols = None
@@ -17,7 +22,7 @@ class FitnessExpiryModel:
             model_path = BASE_DIR / "certificate_expiry_predictor.joblib"
             cols_path = BASE_DIR / "certificate_expiry_feature_columns.pkl"
             if not model_path.exists():
-                print("No trained certificate-expiry model found; using fallback logic")
+                _ml_log("certificate_expiry: FALLBACK (DummyFitnessModel) - no trained model found")
                 cls._model = DummyFitnessModel()
                 cls._feature_cols = DEFAULT_FEATURE_COLS
             else:
@@ -26,6 +31,7 @@ class FitnessExpiryModel:
                     cls._feature_cols = joblib.load(cols_path)
                 else:
                     cls._feature_cols = DEFAULT_FEATURE_COLS
+                _ml_log(f"certificate_expiry: TRAINED MODEL LOADED (models/{model_path.name})")
         return cls._model
 
     @classmethod
@@ -130,10 +136,11 @@ class MaintenanceUrgencyModel:
         if cls._model is None:
             model_path = BASE_DIR / "maintenance_urgency_scorer.joblib"
             if not model_path.exists():
-                print("No trained maintenance-urgency model found; using fallback logic")
+                _ml_log("maintenance_urgency: FALLBACK (DummyUrgencyModel) - no trained model found")
                 cls._model = DummyUrgencyModel()
             else:
                 cls._model = joblib.load(model_path)
+                _ml_log(f"maintenance_urgency: TRAINED MODEL LOADED (models/{model_path.name})")
         return cls._model
 
     @classmethod
